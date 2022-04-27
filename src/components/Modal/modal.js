@@ -5,7 +5,6 @@ import s from './modal.module.css';
 import propTypes from 'prop-types';
 
 export default function Modal({ onClose, modalImage }) {
-  // Esc close Modal
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
 
@@ -19,9 +18,6 @@ export default function Modal({ onClose, modalImage }) {
       onClose();
     }
   };
-  //======================
-
-  //Bacdrop close Modal
 
   const handleBackdropClick = e => {
     if (e.currentTarget === e.target) {
