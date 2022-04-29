@@ -16,11 +16,13 @@ export default function App() {
   const [page, setPage] = useState(1)
   const [pictureGallery, setPictureGallery] = useState([])
   const [picture, setPicture] = useState(null)
-  const [error, setError] = useState(null)
+  const [, setError] = useState(null)
   const [modal, setModal] = useState(null)
   const [showModal, setShowModal] = useState(false)
   const [totalHits, setTotalHits] = useState(null)
   
+ 
+
 
   useEffect(() => {
     if (!picture) {
@@ -28,6 +30,13 @@ export default function App() {
     }
     setStatus('panding')
   
+ const queryCondition = (picture) => {
+    if (page > 1) { setPictureGallery(prevPictureGallery => [...prevPictureGallery, ...picture.hits]) }
+    else {setPictureGallery([...picture.hits])  };
+    setTotalHits(picture.totalHits);
+    setStatus('resolved');
+  }
+
     api.fetchPicture(picture, page)
       .then(picture => queryCondition (picture))
       .catch(error => {
@@ -36,12 +45,7 @@ export default function App() {
       })
     }, [page, picture]);
 
-  const queryCondition = (picture) => {
-    if (page > 1) { setPictureGallery(prevPictureGallery => [...prevPictureGallery, ...picture.hits]) }
-    else {setPictureGallery([...picture.hits])  };
-    setTotalHits(picture.totalHits);
-    setStatus('resolved');
-  }
+
 
   const handleFormSubmit = picture => {
     setPicture(picture);
@@ -64,8 +68,7 @@ export default function App() {
 
     const balance = totalHits - page * api.PerPage;
   
-  // console.log(page)
-  // console.log(balance)
+
     return (
       <div className={s.app}>
         <Searchbar onSubmit={handleFormSubmit} />
