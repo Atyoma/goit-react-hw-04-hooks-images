@@ -23,23 +23,20 @@ export default function App() {
   
 
   useEffect(() => {
-    // console.log(pictureGallery.hits)
     if (!picture) {
       return;
     }
     setStatus('panding')
   
-
     api.fetchPicture(picture, page)
-      .then(picture => handleResponse (picture))
+      .then(picture => queryCondition (picture))
       .catch(error => {
         setError( 'error' )
         setStatus('rejected')
       })
-    // console.log('Page in useffect1:', page)
     }, [page, picture]);
 
-  const handleResponse = (picture) => {
+  const queryCondition = (picture) => {
     if (page > 1) { setPictureGallery(prevPictureGallery => [...prevPictureGallery, ...picture.hits]) }
     else {setPictureGallery([...picture.hits])  };
     setTotalHits(picture.totalHits);
